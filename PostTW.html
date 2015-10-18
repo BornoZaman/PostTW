@@ -3,13 +3,71 @@
 </head>
 
 <body>
-  <h1>Events list</h1>
+  <div>
+	  	<h1>Welcome to PostWeek</h1>
 
+
+	  	{{>loginButtons}}
+
+	  	{{#if currentUser }}
+	 		{{>details}}
+		{{/if}}
+
+		<!-- List all users 
+		{{#if currentUser }}
+			{{#each directory }}
+			<ul>
+			{{> user }}
+			</ul>
+			{{/each}}
+  		{{/if}}-->
+
+  		{{#if currentUser }}
+  		{{#each events }}
+			
+			{{> event }}
+			
+		{{/each}}
+		{{/if}}
+
+</div>
+
+	
 
 </body>
 
-<!--
-<template name="events">
-  
+
+<template name="user">
+  <li>
+  {{ username }}
+  {{ type }} 
+  </li>
 </template>
--->
+
+<template name="event">
+	<br>
+	<div class = "event">
+		<button type="button" name="{{_id}}Event">
+		{{text}}
+		</button>
+
+	</div>
+	
+</template>
+
+<template name="details">
+	<form class="details">
+		<input type="text" name="name" placeholder="name"/>
+		<br>
+	
+		<input type="radio" name="type" value="Attendee">Attendee
+		<br>
+		<input type="radio" name="type" value="Speaker">Speaker
+		<br>
+
+
+		<input type="submit" value="Continue">
+	</form>
+</template>
+
+
