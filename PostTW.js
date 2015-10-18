@@ -11,6 +11,7 @@ if (Meteor.isServer){
 
   Accounts.onCreateUser(function(options, user){
     user.type = "Attendee";
+    user.eventList = [];
     return user;
   });
 }
@@ -33,7 +34,11 @@ if (Meteor.isClient) {
   });
 
   Template.event.events({
-    
+    "click .eventAdd": function() {
+      Meteor.call("eventAdd", this._id);
+      
+    },
+
   });
 
   Template.user.helpers({});
@@ -41,12 +46,13 @@ if (Meteor.isClient) {
   Template.details.helpers({});
 
   Template.details.events({
-    "submit form": function(event) {
+    "click .details": function(event) {
       //var type = $('input[name="type"]:checked', event.target.type.value)
       event.preventDefault();
-      var typeSet = event.target.type.value;
-      Meteor.call("changeType", typeSet);
+      var typeSet = event.currentTarget.typeSel.value;
       console.log(typeSet);
+      Meteor.call("changeType", typeSet);
+      
     }
 
     /*
@@ -69,8 +75,15 @@ Meteor.methods({
 
   changeType: function(typeSet){
     Meteor.users.update({_id:Meteor.user()._id}, {
-        $set: {type : typeSet}
+      $set: {type : typeSet}
     });
+  },
+
+  eventAdd: function(eventId){
+    console.log(eventId);
+    Meteor.users.update({_id:Meteor.user()._id}, {
+      $addToSet: {eventList: eventId}
+    })
   }
 
 })
