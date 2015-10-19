@@ -3,16 +3,11 @@
 </head>
 
 <body>
-  <div>
+  	<div>
 	  	<h1>Welcome to PostWeek</h1>
 
 
 	  	{{>loginButtons}}
-
-	  	{{#if currentUser }}
-	 		{{>details}}
-		{{/if}}
-
 		<!-- List all users 
 		{{#if currentUser }}
 			{{#each directory }}
@@ -23,19 +18,40 @@
   		{{/if}}-->
 
   		{{#if currentUser }}
-  		{{#each events }}
-			
-			{{> event }}
-			
-		{{/each}}
+  			<!-- {{Header}} MAKE THIS 
+	  		{{> details }}
+			ADD LOGIC TO SWITCH TEMPLATE BETWEEN PAGES
+			{{> schedule }}-->
+
+			{{> Template.dynamic template=templateName }}
+
 		{{/if}}
+		<br>
+		<button type="button" class="switchPage">
+			Continue
+		</button>
+		
 
-</div>
-
-	
-
+	</div>
 </body>
 
+<template name = "schedule">
+	{{#each myEvents }}
+		{{> eventShow}}
+	{{/each}}
+</template>
+
+<template name="eventShow">
+	<br>
+	<div name="{{_id}}" class = "eventShow">
+		{{text}}
+		<ul>
+			{{#each participant }}
+			{{> user}}
+			{{/each}}
+		</ul>
+	</div>
+</template>
 
 <template name="user">
   <li>
@@ -44,37 +60,29 @@
   </li>
 </template>
 
-<template name="event">
-	<br>
-	<div class = "event">
-		<!--
-		<button type="button" class ="eventAdd">
-		{{text}}
-		</button> -->
-
-		<input type="checkbox" class ="eventAdd">
-		{{text}}
-		
-
-	</div>
-	
-</template>
-
 <template name="details">
 	<form class="details">
 		<!--
 		<input type="text" name="name" placeholder="name"/>
 		<br>-->
 		<br>
-	
 		<input type="radio" name="typeSel" class= "typeSelect" value="Attendee" >Attendee
-		<br>
 		<input type="radio" name="typeSel" class= "typeSelect" value="Speaker" >Speaker
 		<br>
-
-
-		<!--<input type="submit" value="Continue">-->
+		{{#each events }}
+				{{> eventAdd }}
+		{{/each}}
 	</form>
 </template>
 
-
+<template name="eventAdd">
+	<br>
+	<div class = "eventAdd">
+		<!--
+		<button type="button" class ="eventAdd">
+		{{text}}
+		</button> -->
+		<input type="checkbox" class ="eventAdd">
+		{{text}}
+	</div>
+</template>
