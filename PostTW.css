@@ -1,1 +1,68 @@
 /* CSS declarations go here */
+
+body{
+	font-size:32px;
+}
+
+.container-fluid {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.header {
+	position: fixed;
+	background-color:white;
+	width: 100%;
+	opacity:0.8 
+}
+
+.button-wide{
+	padding-bottom: 10px;
+
+}
+
+
+.typeButton{
+	width: 50%;
+	float: left;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	display: inline;
+
+}
+
+.typeSelect{
+	width:40%;
+}
+
+.user{
+	width:100%; 
+	padding-right:10px
+}
+
+.eventShow{
+	height: auto;
+	background-color: pink;
+}
+
+.eventAdd{
+	width:100%;
+	text-align: left;
+}
+h1{
+	font-size: 3.5em;
+}
+
+h2{
+	font-size: 2.5em;
+	display: inline-block;
+}
+h3{
+	font-size: 1.5em;
+}
+.inline{
+	display: inline-block;
+}

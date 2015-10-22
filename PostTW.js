@@ -14,7 +14,7 @@ if (Meteor.isServer){
       {fields: {'eventList':1}});
   });
 
-  Meteor.publish("participant", function(){  });
+  Meteor.publish("participant", function(){ });
 
   Accounts.onCreateUser(function(options, user){
     user.type = "Attendee";
@@ -31,7 +31,7 @@ if (Meteor.isClient) {
   Meteor.subscribe("myEvents");
 
   Meteor.startup(function(){
-    Session.setDefault("templateName", "details");
+    Session.setDefault("templateName", "schedule");
   });
 
   Template.body.helpers({
@@ -50,8 +50,18 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.body.events({
-    "click .switchPage": function(){
+  Template.header.helpers({
+    page: function(){
+      if (Session.get("templateName") == "details") {
+          return "Connect >"
+        }else{
+          return "< Add"
+        }
+    }
+  })
+
+  Template.header.events({
+    "click .pageSwitch": function(){
         if (Session.get("templateName") == "details") {
           Session.set("templateName", "schedule");
         }else{
@@ -90,25 +100,22 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.schedule.events({});
-
   Template.eventShow.helpers({
-    /*
-    personalEvents: function(){
-      var user = Meteor.user();
-      if(user && Array.isArray(user.eventList)){
-        return Events.find({_id: {$in: user.eventList }}). fetch();
-      }else{
-        return [];
-      }
-    },*/
     participant: function() {
-      console.log (this._id);
       eventId = this._id;
-      return Meteor.users.find(//{_id: !Meteor.user()._id} && 
-        {eventList: eventId }).fetch();
+      return Meteor.users.find({eventList: eventId }).fetch();
+      console.log(Meteor.users.find({eventList: eventId }).fetch())
     }
   });
+
+  Template.eventShow.events({
+    "click .eventShow": function(){
+      var divId = 'ObjectID("'+this._id+'")participants';
+      $("#eventName").css('display', 'none');
+      //$("."+divId).css('display', 'none');
+      console.log(divId);
+    }
+  })
 
   Template.user.helpers({});
 
@@ -128,6 +135,5 @@ Meteor.methods({
     Meteor.users.update({_id:Meteor.user()._id}, {
       $addToSet: {eventList: eventId}
     })
-  }
-
+  },
 })

@@ -1,63 +1,78 @@
 <head>
-  <title>PostTW</title>
+  <title>PostWeek</title>
+
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
 </head>
 
 <body>
-  	<div>
-	  	<h1>Welcome to PostWeek</h1>
-
-
-	  	{{>loginButtons}}
-		<!-- List all users 
-		{{#if currentUser }}
-			{{#each directory }}
-			<ul>
-			{{> user }}
-			</ul>
-			{{/each}}
-  		{{/if}}-->
+  	<div >
 
   		{{#if currentUser }}
-  			<!-- {{Header}} MAKE THIS 
-	  		{{> details }}
-			ADD LOGIC TO SWITCH TEMPLATE BETWEEN PAGES
-			{{> schedule }}-->
 
+			{{> header}}
 			{{> Template.dynamic template=templateName }}
 
-		{{/if}}
-		<br>
-		<button type="button" class="switchPage">
-			Continue
-		</button>
-		
+			<br>
+					
+		{{else}}
 
+			<div style="padding-top:20%; text-align: center">
+				<h1>Welcome to PostWeek</h1>
+	  		{{>loginButtons}}</div>
+			
+
+		{{/if}}
 	</div>
 </body>
 
+<template name= "header">
+	<div class="container-fluid header" style= "position: fixed; background-color:white; width: 100%; opacity:0.8 ">
+		<h2> PostWeek </h2>
+
+		{{>loginButtons}}
+
+		<div name="pageSwitcher" style="float: right; margin-top: 20px; display:inline-block; font-size: 1.5em; text-align: right;">
+			<button type="button" name="PageSwitch" class= "pageSwitch pure-button">{{page}}
+			</button>
+		</div>
+	</div>
+	<div class="container-fluid" style="visibility: hidden"><h2>_</h2></div>
+</template>
+
 <template name = "schedule">
-	{{#each myEvents }}
-		{{> eventShow}}
-	{{/each}}
+	<div class="container-fluid">
+		{{#each myEvents }}
+			{{> eventShow}}
+		{{/each}}
+	</div>
+	<div style= "text-align: center">
+		<br>
+		<h3>Don't see events you attended? click the add button above</h3>
+	</div>
 </template>
 
 <template name="eventShow">
 	<br>
 	<div name="{{_id}}" class = "eventShow">
-		{{text}}
-		<ul>
+		<div name="eventName">
+		{{text}} | {{location}}
+		</div>
+
+		<div class="{{_id}}participants" style="padding-left:5%">
 			{{#each participant }}
 			{{> user}}
 			{{/each}}
-		</ul>
+		</div>
+		
 	</div>
 </template>
 
 <template name="user">
-  <li>
-  {{ username }}
-  {{ type }} 
-  </li>
+  <div class="user">
+  	<a href = "{{services.linkedin.siteStandardProfileRequest.url}}" >
+  	{{username}}
+  {{services.linkedin.firstName}} {{services.linkedin.lastName}} - {{services.linkedin.headline}}</a>
+  </div>
 </template>
 
 <template name="details">
@@ -65,13 +80,25 @@
 		<!--
 		<input type="text" name="name" placeholder="name"/>
 		<br>-->
-		<br>
-		<input type="radio" name="typeSel" class= "typeSelect" value="Attendee" >Attendee
-		<input type="radio" name="typeSel" class= "typeSelect" value="Speaker" >Speaker
-		<br>
+
+		<div style="padding-top: 50px" class="container-fluid">
+			<h3>Were you a presenter or just attending?</h3>
+		
+			<div style = "width: 100%">
+				<div class="typeButton" >
+				<button type="button" name="typeSel" class= "typeSelect pure-button" value="Speaker" >Presenter </button>
+				</div>
+				<div class="typeButton">
+				<button type="button" name="typeSel" class= "typeSelect pure-button" value="Attendee" >Attendee </button>
+				</div>
+			</div>
+			<br>
+		<h3>Which events did you go to?</h3>
+
 		{{#each events }}
 				{{> eventAdd }}
 		{{/each}}
+		</div>
 	</form>
 </template>
 
@@ -82,7 +109,7 @@
 		<button type="button" class ="eventAdd">
 		{{text}}
 		</button> -->
-		<input type="checkbox" class ="eventAdd">
-		{{text}}
+		<button type="button" style= "text-align:left" class ="eventAdd pure-button {{#if checked}}pure-button-active{{/if}}">
+		{{text}} | {{location}} </button>
 	</div>
 </template>
